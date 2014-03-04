@@ -10,20 +10,52 @@ LiqPay SDK for php
 #### создание кнопки для оплаты ####
 
 ```php
-liqpay:init(PublicKey, PrivateKey)-> liqpay:liqpay()
-liqpay:cnb_form(Liqpay, Params)-> iolist()
-```
+$configArr = array(
 
-    1> Lp = liqpay:init("i42344324", "fsdfsdfsdf").
-    {liqpay,"i42344324","fsdfsdfsdf"}
-    2> liqpay:cnb_form(Lp, [{amount, 1}, {currency, "USD"}, {description, "test"}]).
-    "<form method=\"POST\" action=\"https://www.liqpay.com/api/pay\">\n\t
-    <input type=\"hidden\" name=\"amount\" value=\"1\" />\n\t
-    <input type=\"hidden\" name=\"currency\" value=\"USD\" />\n\t
-    <input type=\"hidden\" name=\"description\" value=\"test\" />\n\t
-    <input type=\"hidden\" name=\"signature\" value=\"kTjHpD9zLNVU0NO5dDBcCmwOOmA=\" />\n\t
-    <input type=\"image\" src=\"//static.liqpay.com/buttons/p1ru.png\" name=\"btn_text\"
-     class=\"liqpay_pay_button\" />\n</form>\n"
+// Публичный ключ - идентификатор магазина. Получить здесь https://www.liqpay.com/admin/business
+    'public_key' => '',
+
+// Приватный ключ. Получить здесь https://www.liqpay.com/admin/business
+    'private_key' => '',
+
+// URL на который будет произведена переадресация после завершения оплаты
+    'result_url' => '',
+
+// URL API для уведомлений о статусе оплаты (сервер->сервер)
+    'server_url' => '',
+
+// Тип оплаты: buy - покупка в магазине, donate - пожертвование.
+    'type' => 'buy',
+
+// URL для передачи данных
+    'action' => 'https://www.liqpay.com/api/pay',
+
+// Валюта платежа. Доступно: USD, UAH, RUB, EUR
+    'currency' => 'RUB',
+
+// Язык платежной страницы (например ru или en)
+    'language' => 'ru',
+
+// Шаблон для формирования сигнатуры платежа
+    'paySignTpl' => '{private_key}{amount}{currency}{public_key}{order_id}{type}{description}{result_url}{server_url}',
+
+// Шаблон для формирования сигнатуры уведомления
+    'notifSignTpl' => '{private_key}{amount}{currency}{public_key}{order_id}{type}{description}{status}{transaction_id}{sender_phone}',
+
+// Показывать кнопку отправки формы для передачи данных
+    'payButton' => true,
+
+// Автоматически отправлять форму для передачи данных
+    'autoSend' => false,
+);
+
+$amount = 2.56;
+$currency = 'RUB';
+$description = 'Demo order';
+
+$liqpay = new Liqpay($configArr);
+echo $liqpay->getPayForm($order_id, $amount, $description);
+```
 
 ### возможные параметры ###
 
@@ -38,11 +70,4 @@ liqpay:cnb_form(Liqpay, Params)-> iolist()
 `server_url`                    | `Нет`
 `type`                          | `Нет`
 `language`                      | `Нет`
-`order_id`                      | `Нет`
-`order_id`                      | `Нет`
 
-
-
-#### создание сигнатуры для оплаты ####
-    1> liqpay:cnb_signature(Lp, [{amount, 1}, {currency, "USD"}, {description, "test"}]).
-    "kTjHpD9zLNVU0NO5dDBcCmwOOmA="
