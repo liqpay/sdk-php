@@ -27,3 +27,26 @@ echo $liqpay->getForm(array('order_id' => '123456', 'amount' => 5, 'currency' =>
 `server_url`                    | `Нет`
 `type`                          | `Нет`
 `language`                      | `Нет`
+
+
+#### проверка статуса платежа ####
+
+```php
+$liqpay = new LiqPay($public_key, $private_key);
+
+$res = $liqpay->api("payment/status", array('order_id' => 256));
+
+/*
+Результатом print_r($res) будет
+
+stdClass Object (
+    [result] => success
+    [payment_id] => 10240512
+    [order_id] => 256
+    [amount] => 9.99
+    [currency] => UAH
+    [description] => some desc
+    [status] => success
+)
+*/
+```

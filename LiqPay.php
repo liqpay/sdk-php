@@ -74,20 +74,21 @@ class LiqPay
         $private_key = $this->_private_key;
         $data = json_encode(array_merge(compact('public_key'), $params));
         $signature = base64_encode(sha1($private_key.$data.$private_key, 1));
+        $postfields = "data={$data}&signature={$signature}";
 
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,"data={$data}&signature={$signature}");
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$postfields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 
         $server_output = curl_exec($ch);
 
         curl_close($ch);
 
-        return $server_output;
+        return json_decode($server_output);
     }
 
 
