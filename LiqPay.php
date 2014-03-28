@@ -175,7 +175,7 @@ class LiqPay
         }
 
         return sprintf('
-                <form method="post" action="https://www.liqpay.com/api/pay">
+                <form method="post" action="https://www.liqpay.com/api/pay" accept-charset="utf-8">
                     %s
                     <input type="image" src="//static.liqpay.com/buttons/p1%s.radius.png" name="btn_text" />
                 </form>
