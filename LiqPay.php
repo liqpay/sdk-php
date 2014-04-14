@@ -32,7 +32,7 @@ class LiqPay
 
     protected $_supportedParams = array('public_key','amount','currency','description',
                                         'order_id','result_url','server_url','type',
-                                        'signature','language');
+                                        'signature','language','sandbox');
     private $_public_key;
     private $_private_key;
 
@@ -130,6 +130,10 @@ class LiqPay
         $order_id = '';
         if (isset($params['order_id'])) {
            $order_id = $params['order_id'];
+        }
+
+        if (isset($params['sandbox'])) {
+           $params['sandbox'] = intval($params['sandbox']) == 1 ? 1 : 0;
         }
 
         $type = '';
