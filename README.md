@@ -45,7 +45,7 @@ $res = $liqpay->api("payment/status", array('order_id' => 256));
 Результатом print_r($res) будет
 
 stdClass Object (
-    [result] => success
+    [result] => ok
     [payment_id] => 10240512
     [order_id] => 256
     [amount] => 9.99
