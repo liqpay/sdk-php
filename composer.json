@@ -1,0 +1,11 @@
+{
+    "name":"liqpay/liqpay",
+    "type": "library",
+    "description": "SDK for Liqpay",
+    "keywords": ["liqpay","pay"],
+    "homepage": "https://www.liqpay.com/",
+    "version":"1.0.0",
+    "require":{
+        "php":">=5.3.0"
+    }
+}
