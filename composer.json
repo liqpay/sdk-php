@@ -3,8 +3,15 @@
     "type": "library",
     "description": "SDK for Liqpay",
     "keywords": ["liqpay","pay"],
-    "homepage": "https://www.liqpay.com/",
+    "homepage": "https://github.com/liqpay/sdk-php",
     "version":"1.0.3",
+    "license": "OSL",
+    "authors": [
+        {
+            "name": "Liqpay",
+            "homepage": "https://www.liqpay.com/"
+        }
+    ],
     "require":{
         "php":">=5.3.0"
     },
