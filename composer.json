@@ -19,7 +19,7 @@
     },
     "autoload":{
         "classmap":{
-            "./LiqPay.php"
+            "LiqPay.php"
         }
     }
 }
