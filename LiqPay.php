@@ -9,7 +9,7 @@
  * http://opensource.org/licenses/osl-3.0.php
  *
  * @category        LiqPay
- * @package         LiqPay
+ * @package         liqpay/liqpay
  * @version         1.0.3
  * @author          Liqpay
  * @copyright       Copyright (c) 2014 Liqpay

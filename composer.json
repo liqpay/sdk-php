@@ -5,11 +5,13 @@
     "keywords": ["liqpay","pay"],
     "homepage": "https://github.com/liqpay/sdk-php",
     "version":"1.0.3",
-    "license": "OSL",
+    "license": "OSL 3.0",
     "authors": [
         {
             "name": "Liqpay",
-            "homepage": "https://www.liqpay.com/"
+            "email": "support@liqpay.com",
+            "homepage": "https://www.liqpay.com/",
+            "role": "Developer"
         }
     ],
     "require":{
@@ -17,7 +19,7 @@
     },
     "autoload":{
         "psr-0":{
-            "liqpay":"liqpay"
+            "liqpay":""
         }
     }
 }
