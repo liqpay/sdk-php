@@ -10,7 +10,7 @@
  *
  * @category        LiqPay
  * @package         LiqPay
- * @version         0.0.3
+ * @version         1.0.3
  * @author          Liqpay
  * @copyright       Copyright (c) 2014 Liqpay
  * @license         http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -119,7 +119,7 @@ class LiqPay
         if (!isset($params['description'])) {
             throw new Exception('Description is null');
         }
-    
+
         $params['signature'] = $this->cnb_signature($params);
 
 
@@ -220,7 +220,7 @@ class LiqPay
      * @return string
      */
     public function str_to_sign($str)
-    {        
+    {
 
         $signature = base64_encode(sha1($str,1));
 

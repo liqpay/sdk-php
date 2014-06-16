@@ -4,7 +4,7 @@
     "description": "SDK for Liqpay",
     "keywords": ["liqpay","pay"],
     "homepage": "https://www.liqpay.com/",
-    "version":"0.0.3",
+    "version":"1.0.3",
     "require":{
         "php":">=5.3.0"
     },
