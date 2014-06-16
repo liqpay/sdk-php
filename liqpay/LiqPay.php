@@ -10,7 +10,7 @@
  *
  * @category        LiqPay
  * @package         LiqPay
- * @version         0.0.2
+ * @version         0.0.3
  * @author          Liqpay
  * @copyright       Copyright (c) 2014 Liqpay
  * @license         http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -93,13 +93,13 @@ class LiqPay
 
 
     /**
-     * Get form
+     * cnb_form
      *
      * @param array $params
      *
      * @return string
      */
-    public function getForm($params)
+    public function cnb_form($params)
     {
         $public_key = $params['public_key'] = $this->_public_key;
         $private_key = $this->_private_key;
@@ -107,63 +107,21 @@ class LiqPay
         if (!isset($params['amount'])) {
             throw new Exception('Amount is null');
         }
-        $amount = $params['amount'];
-
         if (!isset($params['currency'])) {
            throw new Exception('Currency is null');
         }
-
         if (!in_array($params['currency'], $this->_supportedCurrencies)) {
             throw new Exception('Currency is not supported');
         }
-
         if ($params['currency'] == 'RUR') {
             $params['currency'] = 'RUB';
         }
-        $currency = $params['currency'];
-
         if (!isset($params['description'])) {
             throw new Exception('Description is null');
         }
-        $description = $params['description'];
+    
+        $params['signature'] = $this->cnb_signature($params);
 
-        $order_id = '';
-        if (isset($params['order_id'])) {
-           $order_id = $params['order_id'];
-        }
-
-        if (isset($params['sandbox'])) {
-           $params['sandbox'] = intval($params['sandbox']) == 1 ? 1 : 0;
-        }
-
-        $type = '';
-        if (isset($params['type'])) {
-           $type = $params['type'];
-        }
-
-        $result_url = '';
-        if (isset($params['result_url'])) {
-           $result_url = $params['result_url'];
-        }
-
-        $server_url = '';
-        if (isset($params['server_url'])) {
-           $server_url = $params['server_url'];
-        }
-
-        if (!isset($params['signature'])) {
-            $params['signature'] = base64_encode(sha1(
-                $private_key.
-                $amount.
-                $currency.
-                $public_key.
-                $order_id.
-                $type.
-                $description.
-                $result_url.
-                $server_url,
-            1));
-        }
 
         $language = 'ru';
         if (isset($params['language']) && $params['language'] == 'en') {
@@ -187,6 +145,86 @@ class LiqPay
             join("\r\n", $inputs),
             $language
         );
+    }
+
+
+
+
+
+
+
+    /**
+     * cnb_signature
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    public function cnb_signature($params)
+    {
+        $public_key = $params['public_key'] = $this->_public_key;
+        $private_key = $this->_private_key;
+
+
+        if ($params['currency'] == 'RUR') {
+            $params['currency'] = 'RUB';
+        }
+
+        $amount = $params['amount'];
+        $currency = $params['currency'];
+        $description = $params['description'];
+
+        $order_id = '';
+        if (isset($params['order_id'])) {
+           $order_id = $params['order_id'];
+        }
+
+        $type = '';
+        if (isset($params['type'])) {
+           $type = $params['type'];
+        }
+
+        $result_url = '';
+        if (isset($params['result_url'])) {
+           $result_url = $params['result_url'];
+        }
+
+        $server_url = '';
+        if (isset($params['server_url'])) {
+           $server_url = $params['server_url'];
+        }
+
+        $signature = $this->str_to_sign(
+            $private_key.
+            $amount.
+            $currency.
+            $public_key.
+            $order_id.
+            $type.
+            $description.
+            $result_url.
+            $server_url
+        );
+
+        return $signature;
+    }
+
+
+
+
+    /**
+     * str_to_sign
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    public function str_to_sign($str)
+    {        
+
+        $signature = base64_encode(sha1($str,1));
+
+        return $signature;
     }
 
 }
