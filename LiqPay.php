@@ -105,8 +105,7 @@ class LiqPay
      */
     public function cnb_form($params)
     {
-        $public_key = $params['public_key'] = $this->_public_key;
-        $private_key = $this->_private_key;
+        $params['public_key'] = $this->_public_key;
 
         if (!isset($params['amount'])) {
             throw new InvalidArgumentException('Amount is null');
