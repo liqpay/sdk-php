@@ -42,15 +42,17 @@ class LiqPay
      *
      * @param string $public_key
      * @param string $private_key
+     * 
+     * @throws InvalidArgumentException
      */
     public function __construct($public_key, $private_key)
     {
         if (empty($public_key)) {
-            throw new Exception('public_key is empty');
+            throw new InvalidArgumentException('public_key is empty');
         }
 
         if (empty($private_key)) {
-            throw new Exception('private_key is empty');
+            throw new InvalidArgumentException('private_key is empty');
         }
 
         $this->_public_key = $public_key;
@@ -98,26 +100,27 @@ class LiqPay
      * @param array $params
      *
      * @return string
+     * 
+     * @throws InvalidArgumentException
      */
     public function cnb_form($params)
     {
-        $public_key = $params['public_key'] = $this->_public_key;
-        $private_key = $this->_private_key;
+        $params['public_key'] = $this->_public_key;
 
         if (!isset($params['amount'])) {
-            throw new Exception('Amount is null');
+            throw new InvalidArgumentException('Amount is null');
         }
         if (!isset($params['currency'])) {
-           throw new Exception('Currency is null');
+           throw new InvalidArgumentException('Currency is null');
         }
         if (!in_array($params['currency'], $this->_supportedCurrencies)) {
-            throw new Exception('Currency is not supported');
+            throw new InvalidArgumentException('Currency is not supported');
         }
         if ($params['currency'] == 'RUR') {
             $params['currency'] = 'RUB';
         }
         if (!isset($params['description'])) {
-            throw new Exception('Description is null');
+            throw new InvalidArgumentException('Description is null');
         }
 
         $params['signature'] = $this->cnb_signature($params);
@@ -215,7 +218,7 @@ class LiqPay
     /**
      * str_to_sign
      *
-     * @param array $params
+     * @param string $str
      *
      * @return string
      */
