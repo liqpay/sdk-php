@@ -111,7 +111,6 @@ class LiqPay
             $language = 'en';
         }
 
-        $private_key = $this->_private_key;
         $params    = $this->cnb_params($params);
         $data      = base64_encode( json_encode($params) );
         $signature = $this->cnb_signature($params);
