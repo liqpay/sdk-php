@@ -45,6 +45,7 @@ class LiqPay
     );
     private $_public_key;
     private $_private_key;
+    private $_server_response_code = null;
 
 
     /**
@@ -73,7 +74,7 @@ class LiqPay
     /**
      * Call API
      *
-     * @param string $url
+     * @param string $path
      * @param array $params
      *
      * @return string
@@ -100,10 +101,19 @@ class LiqPay
         curl_setopt($ch, CURLOPT_POSTFIELDS,$postfields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         $server_output = curl_exec($ch);
+        $this->_server_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         return json_decode($server_output);
     }
 
+    /**
+     * Return last api response http code
+     * @return string|null
+     */
+    public function get_response_code()
+    {
+        return $this->_server_response_code;
+    }
 
     /**
      * cnb_form
