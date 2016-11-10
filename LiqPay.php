@@ -73,7 +73,7 @@ class LiqPay
     /**
      * Call API
      *
-     * @param string $url
+     * @param string $path
      * @param array $params
      *
      * @return string
