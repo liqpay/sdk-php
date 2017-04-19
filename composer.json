@@ -4,7 +4,6 @@
     "description": "SDK for Liqpay",
     "keywords": ["liqpay","pay"],
     "homepage": "https://github.com/liqpay/sdk-php",
-    "version":"1.0.3",
     "license": "OSL 3.0",
     "authors": [
         {
