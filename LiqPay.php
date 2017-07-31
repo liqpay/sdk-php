@@ -17,14 +17,14 @@
  *
  * EXTENSION INFORMATION
  *
- * LIQPAY API       https://www.liqpay.ua/ru/doc
+ * LIQPAY API       https://www.liqpay.ua/documentation/en
  *
  */
 
 /**
  * Payment method liqpay process
  *
- * @author      Liqpay <support@liqpay.com>
+ * @author      Liqpay <support@liqpay.ua>
  */
 class LiqPay
 {
@@ -139,7 +139,7 @@ class LiqPay
             <form method="POST" action="%s" accept-charset="utf-8">
                 %s
                 %s
-                <input type="image" src="//static.liqpay.com/buttons/p1%s.radius.png" name="btn_text" />
+                <input type="image" src="//static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
             </form>
             ',
             $this->_checkout_url,
