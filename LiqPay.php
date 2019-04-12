@@ -52,10 +52,11 @@ class LiqPay
      *
      * @param string $public_key
      * @param string $private_key
+     * @param string $api_url (optional)
      *
      * @throws InvalidArgumentException
      */
-    public function __construct($public_key, $private_key)
+    public function __construct($public_key, $private_key, $api_url = null)
     {
         if (empty($public_key)) {
             throw new InvalidArgumentException('public_key is empty');
@@ -67,6 +68,10 @@ class LiqPay
 
         $this->_public_key = $public_key;
         $this->_private_key = $private_key;
+        
+        if (null !== $api_url) {
+            $this->_api_url = $api_url;
+        }
     }
 
     /**
