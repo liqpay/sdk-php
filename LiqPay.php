@@ -17,14 +17,14 @@
  *
  * EXTENSION INFORMATION
  *
- * LIQPAY API       https://www.liqpay.com/ru/doc
+ * LIQPAY API       https://www.liqpay.ua/documentation/ru
  *
  */
 
 /**
  * Payment method liqpay process
  *
- * @author      Liqpay <support@liqpay.com>
+ * @author      Liqpay <support@liqpay.ua>
  */
 class LiqPay
 {
@@ -34,8 +34,8 @@ class LiqPay
     const CURRENCY_RUB = 'RUB';
     const CURRENCY_RUR = 'RUR';
 
-    private $_api_url = 'https://www.liqpay.com/api/';
-    private $_checkout_url = 'https://www.liqpay.com/api/3/checkout';
+    private $_api_url = 'https://www.liqpay.ua/api/';
+    private $_checkout_url = 'https://www.liqpay.ua/api/3/checkout';
     protected $_supportedCurrencies = array(
         self::CURRENCY_EUR,
         self::CURRENCY_USD,
@@ -130,7 +130,7 @@ class LiqPay
             <form method="POST" action="%s" accept-charset="utf-8">
                 %s
                 %s
-                <input type="image" src="//static.liqpay.com/buttons/p1%s.radius.png" name="btn_text" />
+                <input type="image" src="//static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
             </form>
             ',
             $this->_checkout_url,
