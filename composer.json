@@ -1,5 +1,5 @@
 {
-    "name":"kagatan/liqpay",
+    "name":"liqpay/liqpay",
     "type": "library",
     "description": "SDK for Liqpay",
     "keywords": ["liqpay","pay"],
