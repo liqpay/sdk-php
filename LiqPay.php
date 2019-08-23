@@ -151,6 +151,23 @@ class LiqPay
             $language
         );
     }
+    
+    /**
+     * cnb_form raw data for custom form
+     *
+     * @param $params
+     * @return array
+     */
+    public function cnb_form_raw($params)
+    {
+        $params = $this->cnb_params($params);
+        
+        return array(
+            'url'       => $this->_checkout_url,
+            'data'      => $this->encode_params($params),
+            'signature' => $this->cnb_signature($params)
+        );
+    }
 
     /**
      * cnb_signature
