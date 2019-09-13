@@ -89,11 +89,11 @@ class LiqPay
             throw new InvalidArgumentException('version is null');
         }
         $params['public_key'] = $this->_public_key;
+        $data = $this->encode_params($params);
         $postfields  = http_build_query(array(
-            'data'  => $this->encode_params($params),
+            'data'  => $data,
             'signature' => $this->getSignature($data)
         ));
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->_api_url . $path);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // Avoid MITM vulnerability http://phpsecurity.readthedocs.io/en/latest/Input-Validation.html#validation-of-input-sources
