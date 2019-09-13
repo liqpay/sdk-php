@@ -68,7 +68,7 @@ class LiqPay
 
         $this->_public_key = $public_key;
         $this->_private_key = $private_key;
-        
+
         if (null !== $api_url) {
             $this->_api_url = $api_url;
         }
@@ -88,18 +88,14 @@ class LiqPay
         if (!isset($params['version'])) {
             throw new InvalidArgumentException('version is null');
         }
-        $url         = $this->_api_url . $path;
-        $public_key  = $this->_public_key;
-        $private_key = $this->_private_key;
-        $data        = $this->encode_params(array_merge(compact('public_key'), $params));
-        $signature   = $this->str_to_sign($private_key.$data.$private_key);
+        $params['public_key'] = $this->_public_key;
+        $data = $this->encode_params($params);
         $postfields  = http_build_query(array(
-           'data'  => $data,
-           'signature' => $signature
+            'data'  => $data,
+            'signature' => $this->getSignature($data)
         ));
-
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $this->_api_url . $path);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // Avoid MITM vulnerability http://phpsecurity.readthedocs.io/en/latest/Input-Validation.html#validation-of-input-sources
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);    // Check the existence of a common name and also verify that it matches the hostname provided
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,$timeout);   // The number of seconds to wait while trying to connect
@@ -134,15 +130,8 @@ class LiqPay
      */
     public function cnb_form($params)
     {
-        $language = 'ru';
-        if (isset($params['language']) && $params['language'] == 'en') {
-            $language = 'en';
-        }
-
-        $params    = $this->cnb_params($params);
-        $data      = $this->encode_params($params);
-        $signature = $this->cnb_signature($params);
-        
+        $language = isset($params['language']) && $params['language'] == 'en' ? 'en' : 'ru';
+        $form_data = $this->cnb_form_raw($params);
         return sprintf('
             <form method="POST" action="%s" accept-charset="utf-8">
                 %s
@@ -150,13 +139,13 @@ class LiqPay
                 <input type="image" src="//static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
             </form>
             ',
-            $this->_checkout_url,
-            sprintf('<input type="hidden" name="%s" value="%s" />', 'data', $data),
-            sprintf('<input type="hidden" name="%s" value="%s" />', 'signature', $signature),
+            $form_data['url'],
+            sprintf('<input type="hidden" name="%s" value="%s" />', 'data', $form_data['data']),
+            sprintf('<input type="hidden" name="%s" value="%s" />', 'signature', $form_data['signature']),
             $language
         );
     }
-    
+
     /**
      * cnb_form raw data for custom form
      *
@@ -166,11 +155,11 @@ class LiqPay
     public function cnb_form_raw($params)
     {
         $params = $this->cnb_params($params);
-        
+        $data = $this->encode_params($params);
         return array(
             'url'       => $this->_checkout_url,
-            'data'      => $this->encode_params($params),
-            'signature' => $this->cnb_signature($params)
+            'data'      => $data,
+            'signature' => $this->getSignature($data)
         );
     }
 
@@ -180,16 +169,13 @@ class LiqPay
      * @param array $params
      *
      * @return string
+     * @deprecated
      */
     public function cnb_signature($params)
     {
-        $params      = $this->cnb_params($params);
-        $private_key = $this->_private_key;
-
-        $json      = $this->encode_params($params);
-        $signature = $this->str_to_sign($private_key . $json . $private_key);
-
-        return $signature;
+        $params = $this->cnb_params($params);
+        $data = $this->encode_params($params);
+        return $this->getSignature($data);
     }
 
     /**
@@ -253,11 +239,37 @@ class LiqPay
      * @param string $str
      *
      * @return string
+     * @deprecated
      */
     public function str_to_sign($str)
     {
         $signature = base64_encode(sha1($str, 1));
 
         return $signature;
+    }
+
+    /**
+     * getSignature
+     *
+     * @param string $str
+     *
+     * @return string
+     */
+    public function getSignature($str)
+    {
+        return base64_encode(sha1($this->_private_key. $str . $this->_private_key, 1));
+    }
+
+    /**
+     * validateData
+     *
+     * @param string $str
+     *
+     * @return boolean
+     */
+    public function validateData($data, $signature)
+    {
+        $data = is_string($data) ? $data : $this->encode_params($data);
+        return $this->getSignature($data) === $signature;
     }
 }
