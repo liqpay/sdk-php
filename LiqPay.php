@@ -134,11 +134,12 @@ class LiqPay
      */
     public function cnb_form($params)
     {
-        $language = 'ru';
-        if (isset($params['language']) && $params['language'] == 'en') {
-            $language = 'en';
+        $supportedLangs = ['uk', 'ru', 'en'];
+        $language = 'uk';
+        if (isset($params['language']) && in_array($params['language'], $supportedLangs)) {
+            $language = $params['language'];
         }
-
+        
         $params    = $this->cnb_params($params);
         $data      = $this->encode_params($params);
         $signature = $this->cnb_signature($params);
