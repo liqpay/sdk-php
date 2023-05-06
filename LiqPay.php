@@ -130,7 +130,7 @@ class LiqPay
      */
     public function cnb_form($params)
     {
-        $language = 'ru';
+        $language = 'uk';
         if (isset($params['language']) && $params['language'] == 'en') {
             $language = 'en';
         }
