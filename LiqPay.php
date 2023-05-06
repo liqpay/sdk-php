@@ -31,8 +31,6 @@ class LiqPay
     const CURRENCY_EUR = 'EUR';
     const CURRENCY_USD = 'USD';
     const CURRENCY_UAH = 'UAH';
-    const CURRENCY_RUB = 'RUB';
-    const CURRENCY_RUR = 'RUR';
 
     private $_api_url = 'https://www.liqpay.ua/api/';
     private $_checkout_url = 'https://www.liqpay.ua/api/3/checkout';
@@ -40,8 +38,6 @@ class LiqPay
         self::CURRENCY_EUR,
         self::CURRENCY_USD,
         self::CURRENCY_UAH,
-        self::CURRENCY_RUB,
-        self::CURRENCY_RUR,
     );
     private $_public_key;
     private $_private_key;
@@ -214,9 +210,6 @@ class LiqPay
         }
         if (!in_array($params['currency'], $this->_supportedCurrencies)) {
             throw new InvalidArgumentException('currency is not supported');
-        }
-        if ($params['currency'] == self::CURRENCY_RUR) {
-            $params['currency'] = self::CURRENCY_RUB;
         }
         if (!isset($params['description'])) {
             throw new InvalidArgumentException('description is null');
