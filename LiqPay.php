@@ -46,7 +46,7 @@ class LiqPay
     protected $_actions = array(
         "pay", "hold", "subscribe", "paydonate"
     );
-    public CurlRequester $curlRequester;
+    public $curlRequester;
 
 
     /**
@@ -90,20 +90,18 @@ class LiqPay
      */
     public function api($path, $params = array(), $timeout = 5)
     {
-        if (!isset($params['version'])) {
-            throw new InvalidArgumentException('version is null');
-        }
+        $this->check_required_params($params
+        );
         $url = $this->_api_url . $path;
-        $public_key = $this->_public_key;
         $private_key = $this->_private_key;
-        $data = $this->encode_params(array_merge(compact('public_key'), $params));
+        $data = $this->encode_params($params);
         $signature = $this->str_to_sign($private_key . $data . $private_key);
         $postfields = http_build_query(array(
             'data' => $data,
             'signature' => $signature
         ));
 
-        $server_output = $this->curlRequester->make_curl_request($url, $postfields);
+        $server_output = $this->curlRequester->make_curl_request($url, $postfields, $timeout);
         return json_decode($server_output);
     }
 
@@ -189,6 +187,19 @@ class LiqPay
         return $signature;
     }
 
+    protected function check_required_params($params)
+    {
+        $params['public_key'] = $this->_public_key;
+
+        if (!isset($params['version'])) {
+            throw new InvalidArgumentException('version is null');
+        }
+
+        if (!isset($params['action'])) {
+            throw new InvalidArgumentException('action is null');
+        }
+
+    }
     /**
      * cnb_params
      *
@@ -198,29 +209,17 @@ class LiqPay
      */
     protected function cnb_params($params)
     {
-        $params['public_key'] = $this->_public_key;
+        $this->check_required_params($params);
 
-        if (!isset($params['version'])) {
-            throw new InvalidArgumentException('version is null');
-        }
         if (!isset($params['amount'])) {
             throw new InvalidArgumentException('amount is null');
         }
+
         if (!isset($params['currency'])) {
             throw new InvalidArgumentException('currency is null');
         }
         if (!in_array($params['currency'], $this->_supportedCurrencies)) {
             throw new InvalidArgumentException('currency is not supported');
-        }
-
-        if (!isset($params['action'])) {
-            throw new InvalidArgumentException('action is null');
-        }
-        if (!in_array($params['action'], $this->_actions)) {
-            throw new InvalidArgumentException('action is not supported');
-        }
-        if (!isset($params['order_id'])) {
-            throw new InvalidArgumentException('order_id is null');
         }
 
         if (!isset($params['description'])) {

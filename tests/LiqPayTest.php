@@ -66,7 +66,7 @@ class LiqPayTest extends TestCase
         
         $liqPay->curlRequester = $mockCurlRequester;
         
-        $response = $liqPay->api('/testpath', ['version' => '1.0']);
+        $response = $liqPay->api('/testpath', ['version' => '1.0', 'action' => 'pay']);
         $this->assertEquals((object) ['success' => true], $response);
     }
     
