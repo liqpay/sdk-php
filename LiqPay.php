@@ -90,8 +90,7 @@ class LiqPay
      */
     public function api($path, $params = array(), $timeout = 5)
     {
-        $this->check_required_params($params
-        );
+        $params = $this->check_required_params($params);
         $url = $this->_api_url . $path;
         $private_key = $this->_private_key;
         $data = $this->encode_params($params);
@@ -198,7 +197,7 @@ class LiqPay
         if (!isset($params['action'])) {
             throw new InvalidArgumentException('action is null');
         }
-
+        return $params;
     }
     /**
      * cnb_params
@@ -209,7 +208,7 @@ class LiqPay
      */
     protected function cnb_params($params)
     {
-        $this->check_required_params($params);
+        $params = $this->check_required_params($params);
 
         if (!isset($params['amount'])) {
             throw new InvalidArgumentException('amount is null');
