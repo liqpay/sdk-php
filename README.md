@@ -8,8 +8,9 @@ Documentation https://www.liqpay.ua/documentation/en
 
 Встановлення
 Для втсновлення плагіна за допомогою composer необхідно додати в composer.json секцію repositories:
+```
 "repositories": [
-```{
+    {
         "type":"package",
         "package": {
           "name": "liqpay/sdk-php",
