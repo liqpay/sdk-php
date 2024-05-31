@@ -101,6 +101,9 @@ class LiqPay
         ));
 
         $server_output = $this->curlRequester->make_curl_request($url, $postfields, $timeout);
+        if ($server_output == NULL) {
+            return array('error' => 'Invalid URL or connection timeout');
+        }
         return json_decode($server_output);
     }
 
@@ -288,6 +291,9 @@ class CurlRequester
         $server_output = curl_exec($ch);
         $this->_server_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+        if ($server_output === false) {
+            $server_output = json_encode(array('error' => 'Invalid URL or connection timeout'));
+        }
         return $server_output;
     }
 }
