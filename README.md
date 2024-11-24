@@ -26,5 +26,5 @@ Documentation https://www.liqpay.ua/documentation/en
 
 І в секцію require:
  "require": {
-    "liqpay/sdk-php": "master"
+    "liqpay/sdk-php": "dev-master"
 }
