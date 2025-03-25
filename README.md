@@ -88,6 +88,6 @@ echo $html;
 
 І в секцію require:
  "require": {
-    "liqpay/sdk-php": "master"
+    "liqpay/sdk-php": "dev-master"
 }
 '''
