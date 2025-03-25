@@ -86,7 +86,7 @@ class LiqPay
      * @param array $params
      * @param int $timeout
      *
-     * @return array|null
+     * @return mixed
      */
     public function api($path, $params = array(), $timeout = 15)
     {
@@ -188,6 +188,17 @@ class LiqPay
 
         return $signature;
     }
+
+    /**
+     * Return supported currencies
+     *
+     * @return array
+     */
+    public function get_supported_currencies()
+    {
+        return $this->_supportedCurrencies;
+    }
+
 
     protected function check_required_params($params)
     {
