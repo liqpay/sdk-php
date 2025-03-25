@@ -90,3 +90,4 @@ echo $html;
  "require": {
     "liqpay/sdk-php": "master"
 }
+'''
