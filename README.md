@@ -67,3 +67,26 @@ echo $html;
 Примітка: Переконайтеся, що всі необхідні параметри передані у вигляді асоціативного масиву. Детальний опис параметрів можна знайти в документації LiqPay.
 
 Ці приклади допоможуть вам почати роботу з LiqPay SDK-PHP та інтегрувати платіжну систему у ваш додаток. Для більш детальної інформації зверніться до [офіційної документації](https://www.liqpay.ua/documentation/uk) LiqPay.
+
+
+Для втсновлення плагіна за допомогою composer але з github (найсвіжіша версія) необхідно додати в composer.json секцію repositories:
+```
+"repositories": [
+    {
+        "type":"package",
+        "package": {
+          "name": "liqpay/sdk-php",
+          "version":"master",
+          "source": {
+              "url": "https://github.com/liqpay/sdk-php.git",
+              "type": "git",
+              "reference":"master"
+            }
+        }
+    }
+],
+
+І в секцію require:
+ "require": {
+    "liqpay/sdk-php": "master"
+}
