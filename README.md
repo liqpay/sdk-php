@@ -4,6 +4,12 @@
 
 ---
 
+## Documentation
+
+For full API reference and details, see the LiqPay API documentation:  
+[LiqPay API Docs](https://www.liqpay.ua/documentation/en)
+
+
 ## Table of Contents
 
 1. [Installation](#installation)
@@ -18,7 +24,6 @@
    - [`cnb_signature`](#cnb_signature)
    - [`decode_params`](#decode_params)
    - [`str_to_sign`](#str_to_sign)
-5. [License](#license)
 
 ---
 
