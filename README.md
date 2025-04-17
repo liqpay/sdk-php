@@ -219,8 +219,3 @@ public function str_to_sign(string $str): string
 ```
 
 ---
-
-## License
-
-This library is distributed under the [Open Software License (OSL 3.0)](http://opensource.org/licenses/osl-3.0.php).
-
