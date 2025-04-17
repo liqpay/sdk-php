@@ -80,7 +80,17 @@ class LiqPay
     }
 
     /**
-     * Call API
+     * Set API URL for testing purposes
+     *
+     * @param string $url
+     */
+    public function setApiUrl($url)
+    {
+        $this->_api_url = $url;
+    }
+
+    /**
+     * Call API method
      *
      * @param string $path
      * @param array $params
