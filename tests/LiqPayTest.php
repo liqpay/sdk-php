@@ -104,13 +104,18 @@ class LiqPayTest extends TestCase
         $privateKey = 'your_private_key';
         $apiUrl = 'https://api.example.com';
         $liqPay = new LiqPay($publicKey, $privateKey, $apiUrl);
-        
-        // Set a value to _server_response_code for testing
-        $reflection = new ReflectionClass($liqPay);
-        $property = $reflection->getProperty('_server_response_code');
-        $property->setAccessible(true);
-        $property->setValue($liqPay, 200); // Example response code
-        
+
+        // Mock CURL results
+        $mockCurlRequester = $this->createMock(CurlRequester::class);
+        $mockCurlRequester->expects($this->once())
+            ->method('make_curl_request')
+            ->willReturn('{"success":true}');
+        $mockCurlRequester->expects($this->once())
+            ->method('get_response_code')
+            ->willReturn(200);
+        $liqPay->curlRequester = $mockCurlRequester;
+
+        $liqPay->api('/testpath', ['version' => 3, 'action' => 'test']);
         $responseCode = $liqPay->get_response_code();
         
         $this->assertEquals(200, $responseCode);
