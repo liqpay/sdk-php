@@ -120,6 +120,65 @@ class LiqPayTest extends TestCase
         
         $this->assertEquals(200, $responseCode);
     }
-    
+
+    public function testVersion6IsSha1()
+    {
+        $liqpay = new LiqPay($this->publicKey, $this->privateKey);
+
+        $signature = $liqpay->cnb_signature([
+            'version' => '6',
+            'action' => 'pay',
+            'amount' => '5',
+            'currency' => 'USD',
+            'description' => 'Test V6'
+        ]);
+
+        $decoded = base64_decode($signature);
+        $this->assertEquals(20, strlen($decoded), 'Version 6 must be SHA-1 (20 bytes)');
+    }
+
+    public function testVersion7IsSha3()
+    {
+        $liqpay = new LiqPay($this->publicKey, $this->privateKey);
+
+        $signature = $liqpay->cnb_signature([
+            'version' => '7',
+            'action' => 'pay',
+            'amount' => '5',
+            'currency' => 'USD',
+            'description' => 'Test V7'
+        ]);
+
+        $decoded = base64_decode($signature);
+        $this->assertEquals(32, strlen($decoded), 'Version 7 must be SHA3-256 (32 bytes)');
+    }
+
+    public function testAlgorithmSwitchingOnSameInstance()
+    {
+        $liqpay = new LiqPay($this->publicKey, $this->privateKey);
+
+        $sigOld = $liqpay->cnb_signature([
+            'version' => '3',
+            'action' => 'pay',
+            'amount' => 1,
+            'currency' => 'USD',
+            'description' => 'd',
+        ]);
+
+        $sigNew = $liqpay->cnb_signature([
+            'version' => '7',
+            'action' => 'pay',
+            'amount' => 1,
+            'currency' => 'USD',
+            'description' => 'd',
+        ]);
+
+        $lenOld = strlen(base64_decode($sigOld));
+        $lenNew = strlen(base64_decode($sigNew));
+
+        $this->assertEquals(20, $lenOld, 'V3 -> SHA-1');
+        $this->assertEquals(32, $lenNew, 'V7 -> SHA3-256');
+    }
+
 }
 

@@ -78,15 +78,15 @@ echo $liqpay->cnb_form([
 
 ### Methods Summary
 
-| Method               | Signature                                                            | Description                                  |
-|----------------------|----------------------------------------------------------------------|----------------------------------------------|
-| `api`                | `api(string $path, array $params = [], int $timeout = 5): object\|array`     | Call LiqPay API and return parsed response. |
-| `get_response_code`  | `get_response_code(): int\|null`                                      | Last HTTP status code from API.             |
-| `cnb_form`           | `cnb_form(array $params): string`                                     | Render HTML checkout form.                  |
-| `cnb_form_raw`       | `cnb_form_raw(array $params): array`                                  | Raw URL, data, and signature.               |
-| `cnb_signature`      | `cnb_signature(array $params): string`                                | Compute data signature for checkout.        |
-| `decode_params`      | `decode_params(string $data): array`                                  | Decode Base64‑encoded payload.              |
-| `str_to_sign`        | `str_to_sign(string $str): string`                                    | Generate Base64‑SHA1 signature.             |
+| Method               | Signature                                                                | Description                                  |
+|----------------------|--------------------------------------------------------------------------|----------------------------------------------|
+| `api`                | `api(string $path, array $params = [], int $timeout = 5): object\|array` | Call LiqPay API and return parsed response. |
+| `get_response_code`  | `get_response_code(): int\|null`                                         | Last HTTP status code from API.             |
+| `cnb_form`           | `cnb_form(array $params): string`                                        | Render HTML checkout form.                  |
+| `cnb_form_raw`       | `cnb_form_raw(array $params): array`                                     | Raw URL, data, and signature.               |
+| `cnb_signature`      | `cnb_signature(array $params): string`                                   | Compute data signature for checkout.        |
+| `decode_params`      | `decode_params(string $data): array`                                     | Decode Base64‑encoded payload.              |
+| `str_to_sign`        | `str_to_sign(string $str, string $algo = 'sha1'): string`                | Generate signature with specific algorithm. |
 
 ---
 
@@ -217,10 +217,10 @@ public function decode_params(string $data): array
 
 ### `str_to_sign`
 
-Generate a Base64‑SHA1 signature for any string.
+Generate a Base64‑SHA1 signature by default for any string.
 
 ```php
-public function str_to_sign(string $str): string
+public function str_to_sign(string $str, string $algo = 'sha1'): string
 ```
 
 ---

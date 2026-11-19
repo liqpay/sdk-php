@@ -31,15 +31,13 @@ class LiqPay
 {
     private $_api_url = 'https://www.liqpay.ua/api/';
     private $_checkout_url = 'https://www.liqpay.ua/api/3/checkout';
-    protected $_supportedCurrencies = array(
-        'EUR', 'USD', 'UAH');
-    protected $_supportedLangs = ['uk', 'ru', 'en'];
+    protected $_supportedCurrencies = ['EUR', 'USD', 'UAH'];
+    protected $_supportedLangs = ['uk', 'en'];
     private $_public_key;
     private $_private_key;
     private $_server_response_code = null;
 
     protected $_button_translations = array(
-        'ru' => 'Оплатить',
         'uk' => 'Сплатити',
         'en' => 'Pay'
     );
@@ -104,7 +102,8 @@ class LiqPay
         $url = $this->_api_url . $path;
         $private_key = $this->_private_key;
         $data = $this->encode_params($params);
-        $signature = $this->str_to_sign($private_key . $data . $private_key);
+        $algo = $this->get_hashing_algorithm($params['version']);
+        $signature = $this->str_to_sign($private_key . $data . $private_key, $algo);
         $postfields = http_build_query(array(
             'data' => $data,
             'signature' => $signature
@@ -195,7 +194,8 @@ class LiqPay
         $private_key = $this->_private_key;
 
         $json = $this->encode_params($params);
-        $signature = $this->str_to_sign($private_key . $json . $private_key);
+        $algo = $this->get_hashing_algorithm($params['version']);
+        $signature = $this->str_to_sign($private_key . $json . $private_key, $algo);
 
         return $signature;
     }
@@ -222,6 +222,7 @@ class LiqPay
         if (!isset($params['action'])) {
             throw new InvalidArgumentException('action is null');
         }
+
         return $params;
     }
     /**
@@ -283,11 +284,23 @@ class LiqPay
      *
      * @return string
      */
-    public function str_to_sign($str)
+    public function str_to_sign($str, $algo = 'sha1')
     {
-        $signature = base64_encode(sha1($str, 1));
+        $signature = base64_encode(hash($algo, $str, true));
 
         return $signature;
+    }
+
+    /**
+     * get_hashing_algorithm
+     *
+     * @param string|int $version
+     *
+     * @return string
+     */
+    private function get_hashing_algorithm($version)
+    {
+        return (intval($version) >= 7) ? 'sha3-256' : 'sha1';
     }
 }
 
