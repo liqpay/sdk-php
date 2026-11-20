@@ -314,7 +314,9 @@ class CurlRequester
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $server_output = curl_exec($ch);
         $this->_server_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($ch);
+        }
         if ($server_output === false) {
             $server_output = json_encode(array('error' => 'Invalid URL or connection timeout'));
         }

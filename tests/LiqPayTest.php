@@ -121,5 +121,23 @@ class LiqPayTest extends TestCase
         $this->assertEquals(200, $responseCode);
     }
     
+    public function testCurlRequestWithoutDeprecations()
+    {
+        $deprecations = [];
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+            return true;
+        }, E_DEPRECATED);
+
+        try {
+            $response = (new CurlRequester())->make_curl_request('http://127.0.0.1:1', '', 1);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertEquals('{"error":"Invalid URL or connection timeout"}', $response);
+        $this->assertSame([], $deprecations);
+    }
+    
 }
 
